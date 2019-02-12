@@ -15,8 +15,6 @@
 import os
 import sys
 
-on_rtd = os.getenv('READTHEDOCS') == 'True'
-
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -42,13 +40,9 @@ release = '1.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon'
 ]
-
-if on_rtd:
-    extensions.append('sphinxcontrib.napoleon')
-else:
-    extensions.append('sphinx.ext.napoleon')
 
 autodoc_member_order = 'bysource'
 
