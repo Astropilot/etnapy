@@ -53,9 +53,9 @@ class User():
         The date of closure of the account if it took place.
     roles: list of str
         The roles of the user.
-    created_at: `datetime.datetime`
+    created_at: :class:`datetime.datetime`
         The date of creation of the account.
-    updated_at: `datetime.datetime`
+    updated_at: :class:`datetime.datetime`
         The date of the last update of the account.
     deleted_at: Optional[`datetime.datetime`]
         The date of deletion of the account if the account has been deleted.
@@ -105,9 +105,9 @@ class Promo():
         The full name of the promotion.
     term_name: str
         The name and month of the promotion.
-    learning_start: `datetime.datetime`
+    learning_start: :class:`datetime.datetime`
         The start date of the promotion.
-    learning_end: `datetime.datetime`
+    learning_end: :class:`datetime.datetime`
         The end date of the promotion.
     learning_duration: int
         The duration of the promotion in days.
@@ -146,7 +146,7 @@ class Trophy():
         The type of the trophy.
     image_url: str
         The URL of the trophy's image.
-    achieved_at: `datetime.datetime`
+    achieved_at: :class:`datetime.datetime`
         The date of presentation of the trophy.
     """
 
@@ -188,10 +188,10 @@ class Intra():
 
         Returns
         -------
-        dict or None
+        dict or ``None``
             A json dict with some information about the user. Prefer the
-            method `user_info` for getting user information. Return
-            Returns None if the connection failed.
+            method :func:`user_info` for getting user information. Return
+            Returns ``None`` if the connection failed.
         """
 
         if self.is_logged:
@@ -251,8 +251,8 @@ class Intra():
 
         Returns
         -------
-        `User` or None
-            The user object containing the formatted information. None if
+        :class:`User` or ``None``
+            The user object containing the formatted information. ``None`` if
             an error occured.
         """
 
@@ -306,9 +306,9 @@ class Intra():
 
         Returns
         -------
-        list of `Promo` or None
+        list of :class:`Promo` or ``None``
             A list of promotion objects containing the formatted information.
-            None if an error occured.
+            ``None`` if an error occured.
         """
 
         if not self.is_logged:
@@ -330,8 +330,8 @@ class Intra():
 
         Returns
         -------
-        list of str or None
-            A list of walls name. None if an error occured.
+        list of str or ``None``
+            A list of walls name. ``None`` if an error occured.
         """
 
         if not self.is_logged:
@@ -359,7 +359,7 @@ class Intra():
 
         Returns
         -------
-        dict or None
+        dict or ``None``
             A json object of the messages.
         """
 
@@ -385,7 +385,7 @@ class Intra():
 
         Returns
         -------
-        list of `Trophy` or None
+        list of :class:`Trophy` or ``None``
             The list of Trophy objects.
         """
 
