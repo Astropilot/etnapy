@@ -27,136 +27,11 @@ DEALINGS IN THE SOFTWARE.
 """
 
 import requests
-import urllib
-from datetime import datetime
 import functools
 
-class User():
-    """Represents an user on the intranet. This class parse
-    and give formatted information about an user.
-
-    Attributes
-    -----------
-    id: int
-        The internal unique ID of the user.
-    login: str
-        The unique login (username) of the user.
-    firstname: str
-        The first name of the user.
-    lastname: str
-        The last name of the user.
-    email: str
-        The ETNA email of the user.
-    close: bool
-        An boolean to know if the account of the user is closed.
-    closed_at: Optional[`datetime.datetime`]
-        The date of closure of the account if it took place.
-    roles: list of str
-        The roles of the user.
-    created_at: :class:`datetime.datetime`
-        The date of creation of the account.
-    updated_at: :class:`datetime.datetime`
-        The date of the last update of the account.
-    deleted_at: Optional[`datetime.datetime`]
-        The date of deletion of the account if the account has been deleted.
-    """
-
-    def __init__(self, json_data):
-        self.id = json_data["id"]
-        self.login = json_data["login"]
-        self.firstname = json_data["firstname"]
-        self.lastname = json_data["lastname"]
-        self.email = json_data["email"]
-        if isinstance(json_data["close"], (bool)):
-            self.close = False
-        else:
-            self.close = True
-            self.closed_at = datetime.strptime(json_data["close"], '%Y-%m-%d %H:%M:%S')
-        self.roles = json_data["roles"]
-        if json_data["created_at"] is not None:
-            self.created_at = datetime.strptime(json_data["created_at"], '%Y-%m-%d %H:%M:%S')
-        if json_data["updated_at"] is not None:
-            self.updated_at = datetime.strptime(json_data["updated_at"], '%Y-%m-%d %H:%M:%S')
-        if json_data["deleted_at"] is not None:
-            self.deleted_at = datetime.strptime(json_data["deleted_at"], '%Y-%m-%d %H:%M:%S')
-
-    @property
-    def identity(self):
-        """A property that returns the first name and last name with a space
-        between.
-        """
-        return self.firstname + ' ' + self.lastname
-
-    def is_closed(self):
-        if self.close:
-            return True, self.closed_at
-        else:
-            return False, None
-
-class Promo():
-    """Represents an promotion on the intranet. This class parse
-    and give formatted information about an promotion.
-
-    Attributes
-    -----------
-    id: int
-        The internal unique ID of the promotion.
-    target_name: str
-        The full name of the promotion.
-    term_name: str
-        The name and month of the promotion.
-    learning_start: :class:`datetime.datetime`
-        The start date of the promotion.
-    learning_end: :class:`datetime.datetime`
-        The end date of the promotion.
-    learning_duration: int
-        The duration of the promotion in days.
-    promo: str
-        The year of the promotion.
-    spe: str
-        The speciality of promotion.
-    wall_name: str
-        The name of the wall associated with the promotion.
-    """
-
-    def __init__(self, json_data):
-        self.id = json_data["id"]
-        self.target_name = json_data["target_name"]
-        self.term_name = json_data["term_name"]
-        self.learning_start = datetime.strptime(json_data["learning_start"], '%Y-%m-%d').date()
-        self.learning_end = datetime.strptime(json_data["learning_end"], '%Y-%m-%d').date()
-        self.learning_duration = json_data["learning_duration"]
-        self.promo = json_data["promo"]
-        self.spe = json_data["spe"]
-        self.wall_name = json_data["wall_name"]
-
-class Trophy():
-    """Represents an trophy on the intranet. This class parse
-    and give formatted information about an trophy.
-
-    Attributes
-    -----------
-    id: int
-        The internal unique ID of the trophy.
-    name: str
-        The name of the trophy.
-    description: str
-        The description of the trophy.
-    type: str
-        The type of the trophy.
-    image_url: str
-        The URL of the trophy's image.
-    achieved_at: :class:`datetime.datetime`
-        The date of presentation of the trophy.
-    """
-
-    def __init__(self, json_data):
-        self.id = json_data["id"]
-        self.name = json_data["name"]
-        self.description = json_data["description"]
-        self.type = json_data["type"]
-        self.image_url = 'https://achievements.etna-alternance.net/api/achievements/%d.png' % (self.id)
-        self.achieved_at = datetime.strptime(json_data["achieved_at"][0], '%Y-%m-%d %H:%M:%S')
+from .user import User
+from .promo import Promo
+from .trophy import Trophy
 
 class Intra():
     """Represents the ETNA intranet. This class give
@@ -366,7 +241,8 @@ class Intra():
         if not self.is_logged:
             return None
 
-        res = self.session.get('https://intra-api.etna-alternance.net/walls/%s/conversations?from=%d&size=%d' % (urllib.quote('wall_name'), start, stop))
+        url = 'https://intra-api.etna-alternance.net/walls/%s/conversations?from=%d&size=%d' % (wall_name, start, stop)
+        res = self.session.get(url)
         res.encoding = 'utf-8'
 
         if (res.status_code == requests.codes.ok):

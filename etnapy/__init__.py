@@ -13,4 +13,7 @@ __author__ = 'Yohann MARTIN'
 __license__ = 'MIT'
 __version__ = "1.0.0"
 
-from .etnapy import *
+from .user import User
+from .promo import Promo
+from .trophy import Trophy
+from .etnapy import Intra
